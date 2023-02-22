@@ -24,6 +24,18 @@ function getWeather(cityName) {
         })
         .then(function (data) {
           console.log(data)
+          showWeather(data)
+        });
+}
+
+function getForecast(cityName) {
+    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data)
+          showForecast(data)
         });
 }
 
@@ -31,6 +43,7 @@ function searchButtonHandler(event) {
     event.preventDefault();
     var city = $("#city-input").val();
     getWeather(city);
+    getForecast(city);
     saveSearchHistory(city);
 }
 
@@ -46,7 +59,10 @@ function saveSearchHistory(city) {
 saveSearchHistory();
 
 function showWeather(weather) {
-
+    $("#current-forecast-title").text(weather.name + " (" + dayjs().format("M/DD/YY") + ") ");
+    $("#current-forecast-temp").text("Temperature: " + weather.main.temp + "°F");
+    $("#current-forecast-wind").text("Wind Speed: " + weather.wind.speed + " mph");
+    $("#current-forecast-humidity").text("Humidity: " + weather.main.humidity + "%");
 }
 
 function showForecast(forecast) {
