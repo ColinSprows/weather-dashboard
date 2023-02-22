@@ -18,7 +18,7 @@ var searchHistory = []
 
 // FUNCTIONS
 function getWeather(cityName) {
-    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`)
         .then(function (response) {
           return response.json();
         })
@@ -29,21 +29,19 @@ function getWeather(cityName) {
 
 function searchButtonHandler(event) {
     event.preventDefault();
-    let city = $("#city-input").val().trim();
+    var city = $("#city-input").val();
     getWeather(city);
+    saveSearchHistory(city);
 }
 
 function saveSearchHistory(city) {
     searchHistory.push(city);
-    $("#search-history").append("<a href='#' class='list-group-item list-group-item-action' id='" + city + "'>" + city + "</a>")
     localStorage.setItem("weatherSearchHistory", JSON.stringify(searchHistory));
     searchHistory = JSON.parse(localStorage.getItem("weatherSearchHistory"));
-    if (!searchHistory) {
-        searchHistory = []
-    }
-    for(i = 0 ; i < searchHistory.length ;i++) {
+    $("#search-history").empty();
+    for(i = 0 ; i < searchHistory.length; i++) {
         $("#search-history").append("<a href='#' class='list-group-item list-group-item-action' id='" + searchHistory[i] + "'>" + searchHistory[i] + "</a>");
-    }  
+    }
 };
 saveSearchHistory();
 
