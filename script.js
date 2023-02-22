@@ -66,8 +66,24 @@ function showWeather(weather) {
 }
 
 function showForecast(forecast) {
-
+    $("#five-day").empty();
+    for(i = 7; i <= forecast.list.length; i += 8){
+        var forecastCard = `
+        <div class="card col-2">
+            <div class="card-body">
+                <h5 class="5-day-forecast-card-title">` + dayjs(forecast.list[i].dt * 1000).format("MM/DD/YYYY") + `</h5>
+                <img src="https://openweathermap.org/img/wn/` + forecast.list[i].weather[0].icon + `.png" alt="rain">
+                <p class="5-day-forecast-temp">Temp: ` + forecast.list[i].main.temp + `</p>
+                <p class="5-day-forecast-wind">Wind: ` + forecast.list[i].wind.speed + `</p>
+                <p class="5-day-forecast-humidity">Humidity: ` + forecast.list[i].main.humidity + `</p>
+            </div>
+        </div>
+        `;
+        $("#5-day-card").append(forecastCard);
+    }
 }
 
 // INTERACTIONS
 $("#city-button").click(searchButtonHandler)
+
+// use or to solve the null problem
