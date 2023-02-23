@@ -59,7 +59,7 @@ function saveSearchHistory(city) {
 saveSearchHistory();
 
 function showWeather(weather) {
-    $("#current-forecast-title").text(weather.name + " (" + dayjs().format("M/DD/YY") + ") ");
+    $("#current-forecast-title").text(weather.name + " (" + dayjs().format("M/DD/YY") + ") ").append(`<img src="https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png"></img>`);
     $("#current-forecast-temp").text("Temperature: " + weather.main.temp + "°F");
     $("#current-forecast-wind").text("Wind Speed: " + weather.wind.speed + " mph");
     $("#current-forecast-humidity").text("Humidity: " + weather.main.humidity + "%");
@@ -83,7 +83,19 @@ function showForecast(forecast) {
     }
 }
 
+function historyButtonHandler() {
+
+}
+
 // INTERACTIONS
 $("#city-button").click(searchButtonHandler)
+$("search-history").click(historyButtonHandler)
 
-// use or to solve the null problem
+$("#search-history").on("click", function(event){
+    // get the links id value
+    let prevCity = $(event.target).closest("a").attr("id");
+    // pass it's id value to the getCityWeather function
+    getCityWeather(prevCity);
+});
+
+// use or || to solve the null problem
