@@ -35,6 +35,7 @@ function getForecast(cityName) {
         })
         .then(function (data) {
           console.log(data)
+          $("#5-day-card").empty();
           showForecast(data)
         });
 }
@@ -66,10 +67,9 @@ function showWeather(weather) {
 }
 
 function showForecast(forecast) {
-    $("#five-day").empty();
     for(i = 7; i <= forecast.list.length; i += 8){
         var forecastCard = `
-        <div class="card col-2">
+        <div class="card col-md-2 col-sm-10">
             <div class="card-body">
                 <h5 class="5-day-forecast-card-title">` + dayjs(forecast.list[i].dt * 1000).format("MM/DD/YYYY") + `</h5>
                 <img src="https://openweathermap.org/img/wn/` + forecast.list[i].weather[0].icon + `.png" alt="rain">
@@ -83,19 +83,13 @@ function showForecast(forecast) {
     }
 }
 
-function historyButtonHandler() {
-
+function historyButtonHandler(event) {
+        var historyItem = $(event.target).closest("a").attr("id");
+        searchButtonHandler(historyItem);
 }
 
 // INTERACTIONS
-$("#city-button").click(searchButtonHandler)
-$("search-history").click(historyButtonHandler)
-
-$("#search-history").on("click", function(event){
-    // get the links id value
-    let prevCity = $(event.target).closest("a").attr("id");
-    // pass it's id value to the getCityWeather function
-    getCityWeather(prevCity);
-});
+$("#city-button").click(searchButtonHandler);
+$("#search-history").click(historyButtonHandler);
 
 // use or || to solve the null problem
