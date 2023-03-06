@@ -13,8 +13,8 @@
 // DEPENDENCIES
 
 // DATA
-var apiKey = "c88f55c4afe5f730770c8ce85607d5a9"
-var searchHistory = []
+var apiKey = "c88f55c4afe5f730770c8ce85607d5a9";
+var searchHistory = [];
 
 // FUNCTIONS
 function getWeather(cityName) {
@@ -41,15 +41,18 @@ function getForecast(cityName) {
 }
 
 function searchButtonHandler(event) {
-    event.preventDefault();
+    // event.preventDefault();
     var city = $("#city-input").val();
     getWeather(city);
     getForecast(city);
     saveSearchHistory(city);
+    $("#city-input").val("");
 }
 
 function saveSearchHistory(city) {
-    searchHistory.push(city);
+    if(!searchHistory.includes(city)){
+        searchHistory.push(city);
+    }
     localStorage.setItem("weatherSearchHistory", JSON.stringify(searchHistory));
     searchHistory = JSON.parse(localStorage.getItem("weatherSearchHistory"));
     $("#search-history").empty();
@@ -57,7 +60,6 @@ function saveSearchHistory(city) {
         $("#search-history").append("<a href='#' class='list-group-item list-group-item-action' id='" + searchHistory[i] + "'>" + searchHistory[i] + "</a>");
     }
 };
-saveSearchHistory();
 
 function showWeather(weather) {
     $("#current-forecast-title").text(weather.name + " (" + dayjs().format("M/DD/YY") + ") ").append(`<img src="https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png"></img>`);
@@ -85,7 +87,8 @@ function showForecast(forecast) {
 
 function historyButtonHandler(event) {
         var historyItem = $(event.target).closest("a").attr("id");
-        searchButtonHandler(historyItem);
+        getWeather(historyItem);
+        getForecast(historyItem);
 }
 
 // INTERACTIONS
